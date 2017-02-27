@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/14 10:54:56 by sescolas          #+#    #+#             */
-/*   Updated: 2017/01/26 13:53:07 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/27 12:18:14 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,5 @@ int		ft_strfind(char *str, char c)
 			return (len);
 		++len;
 	}
-	return (len);
+	return (0);
 }
