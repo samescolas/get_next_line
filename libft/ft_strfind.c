@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/14 10:54:56 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/27 12:18:14 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/27 12:21:26 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ int		ft_strfind(char *str, char c)
 
 	if (!str || !*str)
 		return (0);
+	if (c == '\0')
+		return (ft_strlen(str));
 	len = 0;
 	while (str[len])
 	{
