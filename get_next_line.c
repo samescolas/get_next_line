@@ -1,121 +1,78 @@
-#include <stdio.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/02/26 13:45:10 by sescolas          #+#    #+#             */
+/*   Updated: 2017/02/26 15:45:48 by sescolas         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
+#include <stdio.h>
 
-int		get_next_line(int fd, char **line);
-static int	find_fd(t_filelist *files, int fd);
-static int	reset_buffer(t_filelist *file, char **line);
-static void	buffer_to_out(t_filelist *file, char **line);
-static int	fill_buffer(t_filelist *file);
-static int	split_buffer(t_filelist *file, char **line);
-
-int		main(void)
+static t_file	*create_file(int fd)
 {
-	int	fd;
-	char	*line;
+	t_file	*file;
 
-	line = (char *)malloc(sizeof(char *));
-	fd = open("cats", O_RDONLY);
-	if (fd)
+	file = (t_file *)malloc(sizeof(t_file));
+	if (file)
 	{
-		while(get_next_line(fd, &line))
+		file->fd = fd;
+		ft_bzero(file->buffer, BUFF_SIZE + 1);
+		file->next = NULL;
+	}
+	return (file);
+}
+
+static t_file	*get_file(t_file **files, int fd)
+{
+	t_file	*file;
+
+	if (!*files)
+	{
+		file = create_file(fd);
+		*files = file;
+	}
+	else
+	{
+		file = *files;
+		while (file->next && file->fd != fd)
+			file = file->next;
+		if (file->fd != fd)
 		{
-			write(1, line, strlen(line));
-			write(1, "\n", 1);
+			file->next = create_file(fd);
+			file = file->next;
 		}
-		close(fd);
 	}
-	return (0);
+	return (file);
 }
 
-static int	find_fd(t_filelist *files, int fd)
+static int	read_from_file(t_file *file, char *line)
 {
-	int	i;
+	char	buf[BUFF_SIZE];
+	int		ret;
 
-	i = 0;
-	while ((files[i]).fd && (files[i]).fd != fd && i < MAX_FILES)
-		++i;
-	if (!(files[i]).fd)
-		(files[i]).fd = fd;
-	return (i);
+	ret = read(file->fd, buf, BUFF_SIZE);
+	if (ret <= 0)
+		return (-1);
+	if (ft_strchr((char *)buf, '\n'))
 }
 
-static int	reset_buffer(t_filelist *file, char **line)
+int			get_next_line(const int fd, char **line)
 {
-	if (!*(file->buffer))
-		return (fill_buffer(file));
-	else
+	static t_file	*files = (void *)0;
+	t_file			*file;
+	
+	if (!line)
+		return (-1);
+	file = get_file(&files, fd);
+	while (!ft_strchr(*line, '\n'))
 	{
-		buffer_to_out(file, line);
-		return (fill_buffer(file));
-	}		
-}
-
-static void	buffer_to_out(t_filelist *file, char **line)
-{
-	char	*str;
-	int	len;
-
-	if (**line)
-		len = strlen(file->buffer) + strlen(*line) + 1;
-	else
-		len = strlen(file->buffer) + 1;
-	str = (char *)malloc(len * sizeof(char));
-	if (**line)
-		strcpy(str, *line);
-	strcat(str, file->buffer);
-	str[len - 1] = '\0';
-	*line = str;
-}
-
-static int		fill_buffer(t_filelist *file)
-{
-	int	ret;
-
-	bzero(file->buffer, BUFF_SIZE + 1);
-	return ((ret = read(file->fd, file->buffer, BUFF_SIZE)));
-}
-
-static int	split_buffer(t_filelist *file, char **line)
-{
-	int	i;
-	int	n;
-	char	tmp[BUFF_SIZE];
-
-	if (!*(file->buffer) && !**line)
-		return (0);
-	n = 0;
-	while ((file->buffer)[n] && (file->buffer)[n] != '\n')
-		++n;
-	(file->buffer)[n++] = '\0';
-	buffer_to_out(file, line);
-	i = 0;
-	while ((file->buffer)[n])
-		(file->buffer)[i++] = (file->buffer)[n++];
-	(file->buffer)[i] = '\0';
-	read(file->fd, tmp, BUFF_SIZE - i + 1);
-	if (!*(file->buffer))
-		strcpy(file->buffer, tmp);
-	else
-		strcat(file->buffer, tmp);
+		if (!read_from_file(file, *line));
+			break ;
+	}
 	return (1);
-}
-
-int		get_next_line(int fd, char **line)
-{
-	static t_filelist	files[MAX_FILES];
-	int			i;
-
-	**line = '\0';
-	i = find_fd(files, fd);
-	if (!*(files[i]).buffer)
-	{
-		if (!fill_buffer(&(files[i])))
-			return (0);
-	}
-	while (!strchr((files[i]).buffer, '\n'))
-	{
-		if (!reset_buffer(&(files[i]), line) || !*(files[i]).buffer)
-			return (0);
-	}
-	return (split_buffer(&(files[i]), line));
 }
