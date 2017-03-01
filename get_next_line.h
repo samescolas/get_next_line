@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/21 15:00:05 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/28 18:43:37 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/28 18:45:20 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define GET_NEXT_LINE_H
 
 # define BUFF_SIZE 32
-# define FILE_LIMIT 2
 
 # include "libft/libft.h"
 # include <unistd.h>
