@@ -6,12 +6,11 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/26 13:45:10 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/28 18:21:19 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/28 18:44:08 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
 
 static t_file	*create_file(int fd)
 {

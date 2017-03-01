@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/21 15:00:05 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/28 17:57:00 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/28 18:43:37 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 # include "libft/libft.h"
 # include <unistd.h>
 # include <fcntl.h>
-# include <string.h>
 # include <stdlib.h>
 
 int					get_next_line(int fd, char **line);
