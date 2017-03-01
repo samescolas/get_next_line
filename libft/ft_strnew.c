@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/08 22:12:31 by sescolas          #+#    #+#             */
-/*   Updated: 2017/01/20 10:46:27 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/28 18:24:34 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,6 @@ char	*ft_strnew(size_t size)
 
 	str = malloc((size + 1) * sizeof(char));
 	if (str)
-		bzero(str, (size + 1));
+		ft_bzero(str, (size + 1));
 	return (str);
 }

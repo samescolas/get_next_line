@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/08 19:09:51 by sescolas          #+#    #+#             */
-/*   Updated: 2017/01/20 10:30:06 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/28 18:25:28 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,6 @@ void	*ft_memalloc(size_t size)
 
 	mem = malloc(size);
 	if (mem)
-		bzero(mem, size);
+		ft_bzero(mem, size);
 	return (mem);
 }

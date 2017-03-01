@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/11 12:30:59 by sescolas          #+#    #+#             */
-/*   Updated: 2017/01/17 15:59:49 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/28 18:24:42 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*ft_strstr(const char *big, const char *little)
 	len_little = ft_strlen((char *)little);
 	while (chars_left >= len_little)
 	{
-		if (!strncmp(big, little, len_little))
+		if (!ft_strncmp(big, little, len_little))
 			return ((char *)big);
 		big++;
 		--chars_left;

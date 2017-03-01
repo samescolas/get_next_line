@@ -6,7 +6,7 @@
 /*   By: sescolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/26 13:45:10 by sescolas          #+#    #+#             */
-/*   Updated: 2017/02/26 15:45:48 by sescolas         ###   ########.fr       */
+/*   Updated: 2017/02/28 18:21:19 by sescolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,29 +50,48 @@ static t_file	*get_file(t_file **files, int fd)
 	return (file);
 }
 
-static int	read_from_file(t_file *file, char *line)
+static int		split_string(char **line, char *buffer, char c)
 {
-	char	buf[BUFF_SIZE];
-	int		ret;
+	char	*ret;
+	char	*newline;
 
-	ret = read(file->fd, buf, BUFF_SIZE);
-	if (ret <= 0)
-		return (-1);
-	if (ft_strchr((char *)buf, '\n'))
+	ret = ft_strnew(ft_strlen(*line) + ft_strfind(buffer, c));
+	ft_strcpy(ret, *line);
+	free(*line);
+	*line = ret;
+	ft_strncat(*line, buffer, ft_strfind(buffer, c));
+	if ((newline = ft_strchr(buffer, '\n')))
+	{
+		ft_memmove(buffer, newline + 1, ft_strlen(newline));
+		ft_bzero(ft_strchr(buffer, '\0'), BUFF_SIZE - ft_strlen(buffer));
+	}
+	else
+		ft_bzero(buffer, BUFF_SIZE);
+	return (c == '\n');
 }
 
-int			get_next_line(const int fd, char **line)
+int				get_next_line(const int fd, char **line)
 {
 	static t_file	*files = (void *)0;
 	t_file			*file;
-	
+	int				ret;
+
 	if (!line)
 		return (-1);
+	*line = ft_strdup("\0");
 	file = get_file(&files, fd);
-	while (!ft_strchr(*line, '\n'))
-	{
-		if (!read_from_file(file, *line));
-			break ;
-	}
-	return (1);
+	if (*(file->buffer))
+		if (split_string(\
+			line, file->buffer, ft_strchr(file->buffer, '\n') ? '\n' : '\0'))
+			return (1);
+	while ((ret = read(file->fd, file->buffer, BUFF_SIZE)) > 0)
+		if (split_string(\
+			line, file->buffer, ft_strchr(file->buffer, '\n') ? '\n' : '\0'))
+			return (1);
+	if (ret > 0 || **line != '\0')
+		return (1);
+	else if (ret == 0)
+		return (0);
+	else
+		return (-1);
 }
